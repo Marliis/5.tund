@@ -28,6 +28,12 @@
 		savePeople($_POST["gender"], $_POST["color"]);
 	}
 	
+	$people = getAllPeople();
+	
+	//echo "<pre>"; //nüüd näitab netilehel ilusamini andmeid, see rida ei ole tegelikult oluline
+	//var_dump($people);
+	//echo "</pre>";
+	
 ?>
 <h1>Data</h1>
 <p>
@@ -53,3 +59,41 @@
 	<input type="submit" value="Salvesta">
 	
 </form>
+
+<h2>Arhiiv</h2>
+<?php 
+
+	foreach($people as $p){
+		
+		echo 	"<h3 style=' color:".$p->clothingColor."; '>"
+				.$p->gender
+				."</h3>";
+	}
+?>
+
+<h2>Arhiivtabel</h2>
+<?php 
+	
+	$html = "<table>";
+		$html .= "<tr>";
+			$html .= "<th>id</th>";
+			$html .= "<th>Sugu</th>";
+			$html .= "<th>Värv</th>";
+			$html .= "<th>Loodud</th>";
+		$html .= "</tr>";
+
+		foreach($people as $p){
+			$html .= "<tr>";
+				$html .= "<td>".$p->id."</td>";
+				$html .= "<td>".$p->gender."</td>";
+				$html .= "<td style=' background-color:".$p->clothingColor."; '>" .$p->clothingColor."</td>";
+				$html .= "<td>".$p->created."</td>";
+			$html .= "</tr>";	
+		}
+		
+	$html .= "</table>";
+	echo $html;
+
+?>
+
+
