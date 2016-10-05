@@ -1,9 +1,9 @@
 <?php
 	
 	//functions.php
-	
-	//alustan sessiooni, et saaks kasutada
-	//$_SESSSION muutujaid
+	require("../../config.php");
+		
+	//alustan sessiooni, et saaks kasutada $_SESSSION muutujaid
 	session_start();
 	
 	//********************
@@ -88,7 +88,22 @@
 	
 	
 	
-	
+	function savePeople ($gender, $color) {
+		
+		$mysqli = new mysqli($GLOBALS["serverHost"],$GLOBALS["serverUsername"],$GLOBALS["serverPassword"],$GLOBALS["database"]);
+
+		$stmt = $mysqli->prepare("INSERT INTO clothingOnTheCampus (gender, color) VALUES (?, ?)");
+		echo $mysqli->error;
+
+		$stmt->bind_param("ss", $gender, $color);
+		
+		if ($stmt->execute()) {
+			echo "salvestamine õnnestus";
+		} else {
+			echo "ERROR ".$stmt->error;
+		}
+		
+	}
 	
 	
 	
@@ -116,6 +131,30 @@
 	echo $answer;
 	echo "<br>";
 	echo hello ("Marliis", "Odamus");
+	*/
+	
+	
+	/*
+	
+	function issetAndNotEmpty($var) {	
+		if ( isset ( $var ) ) {
+			if ( !empty ($var ) ) {
+				return true;			
+			}	
+		} 
+		
+		return false;	
+	}
+	
+	if (issetAndNotEmpty($_POST["loginEmail"])) {
+		
+		//vastab tõele
+		
+	}
+	
+	
+	
+	
 	*/
 
 

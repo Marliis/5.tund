@@ -1,7 +1,6 @@
 <?php
 	
 	//võtab ja kopeerib faili sisu
-	require("../../config.php");
 	require("functions.php");
 	
 	//kas kasutaja on sisse logitud
@@ -21,9 +20,6 @@
 	$signupEmailError = "";
 	$signupPasswordError = "";
 	$signupEmail = "";
-	$signupYearOfBirthError = "";
-	
-
 	
 	// kas e/post oli olemas
 	if ( isset ( $_POST["signupEmail"] ) ) {
@@ -62,45 +58,6 @@
 			
 		}
 		
-		
-		// kas sünniaasta oli olemas
-	if ( isset ( $_POST["signupYearOfBirth"] ) ) {
-		
-		if ( empty ( $_POST["signupYearOfBirth"] ) ) {
-			
-			// oli sünniaasta, kuid see oli tühi
-			$signupYearOfBirthError = "See väli on kohustuslik!";
-			
-		} else {
-			
-			// sünniaasta on õige, salvestan väärtuse muutujasse
-			$signupYearOfBirth = $_POST["signupYearOfBirth"];
-			
-		}
-		
-	}
-		
-		
-		// kas e/post oli olemas
-	if ( isset ( $_POST["signupEmail"] ) ) {
-		
-		if ( empty ( $_POST["signupEmail"] ) ) {
-			
-			// oli email, kuid see oli tühi
-			$signupEmailError = "See väli on kohustuslik!";
-			
-		} else {
-			
-			// email on õige, salvestan väärtuse muutujasse
-			$signupEmail = $_POST["signupEmail"];
-			
-		}
-		
-	}
-		
-		
-		
-		
 	}
 	
 	$gender = "male";
@@ -117,29 +74,23 @@
 	
 	
 	// Kus tean et ühtegi viga ei olnud ja saan kasutaja andmed salvestada
-	if ( isset($_POST["signupEmail"]) &&
-		 isset($_POST["signupPassword"]) &&
-		 isset($_POST["signupYearOfBirth"]) &&
+	if ( isset($_POST["signupPassword"]) &&
+		 isset($_POST["signupEmail"]) &&	
 		 empty($signupEmailError) && 
-		 empty($signupPasswordError) && 
-		 empty($signupYearOfBirthError)
+		 empty($signupPasswordError)
 	   ) {
 		
 		echo "Salvestan...<br>";
 		echo "email ".$signupEmail."<br>";
-		
 		
 		$password = hash("sha512", $_POST["signupPassword"]);
 		
 		echo "parool ".$_POST["signupPassword"]."<br>";
 		echo "räsi ".$password."<br>";
 		
-		echo "Salvestan...<br>";
-		echo "sünniaasta ".$signupYearOfBirth."<br>";
-		
 		//echo $serverPassword;
 		
-		signup($signupEmail, $password, $YearOfBirth);
+		signup($signupEmail, $password);
 	   
 	   
 		
@@ -149,14 +100,12 @@
 	// kontrollin, et kasutaja täitis välja ja võib sisse logida
 	if ( isset($_POST["loginEmail"]) &&
 		 isset($_POST["loginPassword"]) &&
-		 isset($_POST["loginYearOfBirth"]) &&
 		 !empty($_POST["loginEmail"]) &&
-		 !empty($_POST["loginPassword"]) &&
-		 !empty($_POST["loginYearOfBirth"])
+		 !empty($_POST["loginPassword"])
 	  ) {
 		
 		//login sisse
-		$error = login($_POST["loginEmail"], $_POST["loginPassword"], $_POST["loginYearOfBirth"]);
+		$error = login($_POST["loginEmail"], $_POST["loginPassword"]);
 		
 	}
 	
@@ -177,8 +126,8 @@
 			<input name="loginEmail" type="email">
 			
 			<br><br>
-			<label>Parool</label><br>
-			<input name="loginPassword" type="password">
+			
+			<input name="loginPassword" type="password" placeholder="Parool">
 			
 			<br><br>
 			
@@ -194,16 +143,11 @@
 			<input name="signupEmail" type="email" value="<?=$signupEmail;?>"> <?php echo $signupEmailError; ?>
 			
 			<br><br>
-			<label>Parool</label><br>
-			<input name="signupPassword" type="password"> <?php echo $signupPasswordError; ?>
+			
+			<input name="signupPassword" type="password" placeholder="Parool"> <?php echo $signupPasswordError; ?>
 			
 			<br><br>
 			
-			<label>Sünniaasta</label><br>
-			<input name="signupYearOfBirth" type="YearOfBirth"> <?php echo $signupYearOfBirthError; ?>
-			
-			<br><br>
-
 			 <?php if($gender == "male") { ?>
 				<input type="radio" name="gender" value="male" checked> Male<br>
 			 <?php } else { ?>
